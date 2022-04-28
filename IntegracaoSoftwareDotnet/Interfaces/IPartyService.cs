@@ -1,4 +1,5 @@
-﻿using IntegracaoSoftwareDotnet.Controllers;
+﻿using IntegacaoSoftwareDotnet.Models;
+using IntegracaoSoftwareDotnet.Controllers;
 using IntegracaoSoftwareDotnet.Models;
 
 namespace IntegacaoSoftwareDotnet.Interfaces
@@ -7,9 +8,7 @@ namespace IntegacaoSoftwareDotnet.Interfaces
     {
         IEnumerable<Party> GetParties();
         Party GetPartyById(int id);
-        Party CreateParty(Party Party);
-        Party UpdateParty(int id, Party party);
-        string DeleteParty(int id);
-        Party CreatePartyWithMaxGear(List<Character> characters, string partyName);
+        bool DeleteParty(int id);
+        Party CreatePartyWithMaxGear(string partyName);
     }
 }

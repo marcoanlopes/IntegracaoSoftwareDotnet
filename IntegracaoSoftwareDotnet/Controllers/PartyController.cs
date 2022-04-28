@@ -1,4 +1,5 @@
 ﻿using IntegacaoSoftwareDotnet.Interfaces;
+using IntegacaoSoftwareDotnet.Models;
 using IntegracaoSoftwareDotnet.Controllers;
 using IntegracaoSoftwareDotnet.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -16,49 +17,39 @@ namespace IntegacaoSoftwareDotnet.Controllers
             _partyService = partyService;
         }
 
-        [HttpGet]
-        [Route("parties")]
+        [HttpGet("parties")]
         public IActionResult GetParties()
         {
             var parties = _partyService.GetParties();
             return Ok(parties);
         }
 
-        [HttpGet("{id}")]
-        [Route("parties")]
+        [HttpGet("get-party/{id}")]
         public IActionResult GetPartyById(int id)
         {
             var party = _partyService.GetPartyById(id);
             return Ok(party);
         }
 
-        [HttpPost]
-        [Route("create-party")]
-        public IActionResult CreateParty(Party party)
-        {
-            var newParty = _partyService.CreateParty(party);
-            return Ok(newParty);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult UpdateParty(int id, Party party)
-        {
-            var updatedParty = _partyService.UpdateParty(id, party);
-            return Ok(updatedParty);
-        }
-
-        [HttpDelete("{id}")]
+        [HttpDelete("delete-party/{id}")]
         public IActionResult DeleteParty(int id)
         {
-            var deletedPartyName = _partyService.DeleteParty(id);
-            return Ok(new { message = "Party + " + deletedPartyName + " deleted" });
+            var deletedParty = _partyService.DeleteParty(id);
+            if (!deletedParty)
+            {
+                return BadRequest(new { message = "Grupo não encontrado!" });
+            }
+            return Ok(new { message = "Grupo deletado com sucesso. Todos os jogadores voltaram para a fila." });
         }
 
-        [HttpPost]
-        [Route("create-party-max-gear")]
-        public IActionResult CreatePartyWithMaxGear(List<Character> characters, string partyName)
+        [HttpPost("create-party-max-gear")]
+        public IActionResult CreatePartyWithMaxGear(string partyName)
         {
-            var newParty = _partyService.CreatePartyWithMaxGear(characters, partyName);
+            var newParty = _partyService.CreatePartyWithMaxGear(partyName);
+            if(newParty == null)
+            {
+                return BadRequest(new { message = "Todos os grupos possiveis já foram formados! Aguarde mais jogadores." });
+            }
             return Ok(newParty);
         }
 

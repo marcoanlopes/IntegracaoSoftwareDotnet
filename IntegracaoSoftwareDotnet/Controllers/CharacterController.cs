@@ -1,3 +1,4 @@
+using IntegracaoSoftwareDotnet.Context;
 using IntegracaoSoftwareDotnet.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,9 @@ namespace IntegracaoSoftwareDotnet.Controllers
     [ApiController]
     public class CharacterController : ControllerBase
     {
-        private readonly CharacterContext _context;
+        private readonly DatabaseContext _context;
         
-        public CharacterController(CharacterContext context)
+        public CharacterController(DatabaseContext context)
         {
             _context = context;
         }
@@ -68,6 +69,7 @@ namespace IntegracaoSoftwareDotnet.Controllers
         [HttpPost]
         public async Task<ActionResult<Character>> PostCharacter(Character character)
         {
+            character.Available = true;
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
 

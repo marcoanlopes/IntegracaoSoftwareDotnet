@@ -1,7 +1,8 @@
-﻿using IntegracaoSoftwareDotnet.Models;
+﻿using IntegacaoSoftwareDotnet.Models;
+using IntegracaoSoftwareDotnet.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace IntegracaoSoftwareDotnet.Controllers
+namespace IntegracaoSoftwareDotnet.Models
 {
     public class Party
     {
@@ -9,7 +10,6 @@ namespace IntegracaoSoftwareDotnet.Controllers
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
-        public List<Character> Characters { get; set; }
+        public virtual List<Character> Characters { get; set; }
     }
 }
