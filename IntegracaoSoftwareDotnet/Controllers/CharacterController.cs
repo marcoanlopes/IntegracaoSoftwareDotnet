@@ -1,4 +1,4 @@
-using IntegracaoSoftwareDotnet.Context;
+using IntegracaoSoftwareDotnet.Interfaces;
 using IntegracaoSoftwareDotnet.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,94 +9,39 @@ namespace IntegracaoSoftwareDotnet.Controllers
     [ApiController]
     public class CharacterController : ControllerBase
     {
-        private readonly DatabaseContext _context;
+        private readonly ICharacterService _characterService;
         
-        public CharacterController(DatabaseContext context)
+        public CharacterController(ICharacterService characterService)
         {
-            _context = context;
+            _characterService = characterService;
         }
 
-        // GET: api/Character
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters()
+        [HttpPost("create-character")]
+        public IActionResult CreateCharacter(Character character)
         {
-            return await _context.Characters.ToListAsync();
+            var newCharacter = _characterService.CreateCharacter(character);
+            return Ok(newCharacter);
         }
 
-        // GET: api/Character/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Character>> GetCharacter(int id)
+        [HttpGet("get-all-characters")]
+        public IActionResult GetAllCharacters()
         {
-            var character = await _context.Characters.FindAsync(id);
-
-            if (character == null)
-            {
-                return NotFound();
-            }
-
-            return character;
+            var characters = _characterService.GetAll();
+            return Ok(characters);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCharacter(int id, Character character)
+        [HttpGet("get-character/{id}")]
+        public IActionResult GetCharacterById(int id)
         {
-            if (id != character.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(character).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CharacterExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var character = _characterService.GetById(id);
+            return Ok(character);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Character>> PostCharacter(Character character)
+        [HttpDelete("delete-character/{id}")]
+        public IActionResult DeleteCharacter(int id)
         {
-            character.Available = true;
-            _context.Characters.Add(character);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCharacter", new { id = character.Id }, character);
+            _characterService.DeleteCharacter(id);
+            return Ok(new { message = "Personagem deletado com sucesso." });
         }
-
-        // DELETE: api/Character/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Character>> DeleteCharacter(int id)
-        {
-            var character = await _context.Characters.FindAsync(id);
-            if (character == null)
-            {
-                return NotFound();
-            }
-
-            _context.Characters.Remove(character);
-            await _context.SaveChangesAsync();
-
-            return character;
-        }
-
-        private bool CharacterExists(int id)
-        {
-            return _context.Characters.Any(e => e.Id == id);
-        }
-
-
     }
 }

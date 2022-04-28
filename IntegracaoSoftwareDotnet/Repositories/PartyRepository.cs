@@ -29,7 +29,7 @@ namespace IntegacaoSoftwareDotnet.Repository
 
         public IEnumerable<Party> GetParties()
         {
-            return _context.Party.ToList();
+            return _context.Party.Include(i => i.Characters).ToList();
         }
 
         public Party GetPartyById(int id)

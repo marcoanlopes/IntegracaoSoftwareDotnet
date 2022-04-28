@@ -3,7 +3,9 @@ using IntegacaoSoftwareDotnet.Repositories;
 using IntegacaoSoftwareDotnet.Repository;
 using IntegacaoSoftwareDotnet.Services;
 using IntegracaoSoftwareDotnet.Context;
+using IntegracaoSoftwareDotnet.Interfaces;
 using IntegracaoSoftwareDotnet.Models;
+using IntegracaoSoftwareDotnet.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -21,7 +23,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IPartyService, PartyService>();
 builder.Services.AddScoped<IPartyRepository, PartyRepository>();
-//builder.Services.AddScoped<ICharacterService, CharacterService>();
+builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 
 var app = builder.Build();
