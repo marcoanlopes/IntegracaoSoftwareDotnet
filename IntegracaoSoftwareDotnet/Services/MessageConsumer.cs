@@ -53,9 +53,7 @@ namespace IntegacaoSoftwareDotnet.Services
                 var envio = JsonConvert.SerializeObject(payload.Data);
                 var reqBody = new StringBuilder();
                 reqBody.Append(envio);
-                //HttpClientService httpClientService = new();
-                //httpClientService.OnRequest(EHttpVerbs.POST, "localhost:5034/api/Character/create-character", reqBody);
-                //var newCharacter = _characterService.CreateCharacter(payload.Data);            
+           
                 var data = new StringContent(envio, Encoding.UTF8, "application/json");
                 var url = "http://localhost:5034/api/Character/create-character";
                 using var client = new HttpClient();
@@ -64,12 +62,8 @@ namespace IntegacaoSoftwareDotnet.Services
 
                 string result = response.Content.ReadAsStringAsync().Result;
                 Console.WriteLine(result);
-
-
-
-
-
             };
+            
             _channel.BasicConsume(queue: QUEUE,
                                 autoAck: true,
                                 consumer: consumer);

@@ -10,23 +10,24 @@ using IntegracaoSoftwareDotnet.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using EasyNetQ;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
 builder.Services.AddDbContext<DatabaseContext>(opt =>
-    opt.UseInMemoryDatabase("DatabaseWOW"));
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-
+builder.Services.AddScoped<DatabaseContext, DatabaseContext>();
 builder.Services.AddScoped<IPartyService, PartyService>();
 builder.Services.AddScoped<IPartyRepository, PartyRepository>();
 builder.Services.AddScoped<ICharacterService, CharacterService>();
@@ -34,7 +35,6 @@ builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 
 
 
-//builder.Services.AddTransient<ICharacterService, CharacterService>();
 
 builder.Services.AddHostedService<MessageConsumer>();
 
