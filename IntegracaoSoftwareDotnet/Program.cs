@@ -1,3 +1,4 @@
+using IntegacaoSoftwareDotnet.Controllers;
 using IntegacaoSoftwareDotnet.Interfaces;
 using IntegacaoSoftwareDotnet.Repositories;
 using IntegacaoSoftwareDotnet.Repository;
@@ -8,6 +9,9 @@ using IntegracaoSoftwareDotnet.Models;
 using IntegracaoSoftwareDotnet.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using RabbitMQ.Client;
+using EasyNetQ;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,10 +25,18 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
 builder.Services.AddScoped<IPartyService, PartyService>();
 builder.Services.AddScoped<IPartyRepository, PartyRepository>();
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
+
+
+
+//builder.Services.AddTransient<ICharacterService, CharacterService>();
+
+builder.Services.AddHostedService<MessageConsumer>();
 
 var app = builder.Build();
 
@@ -41,5 +53,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//Send send = new Send();
 
 app.Run();

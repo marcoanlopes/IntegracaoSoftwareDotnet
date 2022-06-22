@@ -20,5 +20,6 @@ namespace IntegracaoSoftwareDotnet.Context
         public DbSet<Character> Characters { get; set; } = null;
         public DbSet<Party> Party { get; set; } = null;
         public DbSet<CharacterAvailable> CharactersAvailable { get; set; } = null;
+        
     }
 }
