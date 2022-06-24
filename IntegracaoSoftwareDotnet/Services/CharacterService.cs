@@ -1,4 +1,5 @@
 using IntegacaoSoftwareDotnet.Interfaces;
+using IntegracaoSoftwareDotnet.Context;
 using IntegracaoSoftwareDotnet.Interfaces;
 using IntegracaoSoftwareDotnet.Models;
 
@@ -33,5 +34,6 @@ namespace IntegracaoSoftwareDotnet.Services
         {
             return _characterRepository.GetById(id);
         }
+
     }
 }

@@ -33,6 +33,8 @@ builder.Services.AddScoped<IPartyRepository, PartyRepository>();
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 
+builder.Services.AddScoped<ICharacterService, CharacterService>();
+
 
 
 

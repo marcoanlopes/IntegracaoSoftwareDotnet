@@ -5,7 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using IntegacaoSoftwareDotnet.Interfaces;
 using IntegacaoSoftwareDotnet.Models;
+using IntegracaoSoftwareDotnet.Context;
 using IntegracaoSoftwareDotnet.Interfaces;
+using IntegracaoSoftwareDotnet.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -53,15 +55,27 @@ namespace IntegacaoSoftwareDotnet.Services
                 var envio = JsonConvert.SerializeObject(payload.Data);
                 var reqBody = new StringBuilder();
                 reqBody.Append(envio);
-           
+
+
+
+                //Erro de injeção de dependencia //
+                //await using var provider = new ServiceCollection()
+                //    .AddScoped<ICharacterService>()
+                //    .BuildServiceProvider
+                //using (var scope = provider.CreateScope())
+                //{
+                //    var characterService = scope.ServiceProvider.GetRequiredService<ICharacterService>();
+                //    characterService.CreateCharacterFromQueue(payload.Data);
+                //}
+
+
                 var data = new StringContent(envio, Encoding.UTF8, "application/json");
                 var url = "http://localhost:5034/api/Character/create-character";
                 using var client = new HttpClient();
-                
                 var response = await client.PostAsync(url, data);
-
                 string result = response.Content.ReadAsStringAsync().Result;
                 Console.WriteLine(result);
+
             };
             
             _channel.BasicConsume(queue: QUEUE,

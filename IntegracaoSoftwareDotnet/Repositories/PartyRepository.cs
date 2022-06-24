@@ -38,7 +38,7 @@ namespace IntegacaoSoftwareDotnet.Repository
         }
 
         public Party UpdateParty(int id, Party party)
-        {            
+        {
             _context.Update(party);
             _context.SaveChanges();
             return party;

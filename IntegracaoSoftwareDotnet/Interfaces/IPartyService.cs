@@ -10,5 +10,6 @@ namespace IntegacaoSoftwareDotnet.Interfaces
         Party GetPartyById(int id);
         bool DeleteParty(int id);
         Party CreatePartyWithMaxGear(string partyName);
+        bool UpdateParty(int id, string partyName);
     }
 }

@@ -28,6 +28,10 @@ namespace IntegacaoSoftwareDotnet.Controllers
         public IActionResult GetPartyById(int id)
         {
             var party = _partyService.GetPartyById(id);
+            if (party == null)
+            {
+                return BadRequest(new { message = "Grupo não encontrado!" });
+            }
             return Ok(party);
         }
 
@@ -40,6 +44,16 @@ namespace IntegacaoSoftwareDotnet.Controllers
                 return BadRequest(new { message = "Grupo não encontrado!" });
             }
             return Ok(new { message = "Grupo deletado com sucesso. Todos os jogadores voltaram para a fila." });
+        }
+        [HttpPut("update-party/{id}/{partyName}")]
+        public IActionResult UpdateParty(int id, string partyName)
+        {
+            var updatedParty = _partyService.UpdateParty(id, partyName);
+            if (!updatedParty)
+            {
+                return BadRequest(new { message = "Grupo não encontrado!" });
+            }
+            return Ok(new { message = "Grupo atualizado com sucesso." });
         }
 
         [HttpPost("create-party-max-gear")]

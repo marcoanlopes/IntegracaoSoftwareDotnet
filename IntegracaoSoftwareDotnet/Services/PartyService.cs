@@ -59,6 +59,17 @@ namespace IntegacaoSoftwareDotnet.Services
             _partyRepository.DeleteParty(party);
             return true;
         }
+        public bool UpdateParty(int id, string partyName)
+        {
+            var oldParty = GetPartyById(id);
+            if (oldParty == null)
+            {
+                return false;
+            }
+            oldParty.Name = partyName;            
+            _partyRepository.UpdateParty(id, oldParty);
+            return true;
+        }
 
         public IEnumerable<Party> GetParties()
         {
@@ -70,7 +81,7 @@ namespace IntegacaoSoftwareDotnet.Services
             var party = _partyRepository.GetPartyById(id);
             if(party == null)
             {
-                throw new BadHttpRequestException("Id do grupo é inválido ou não existe!");
+                return party;
             }
             return party;
         }
